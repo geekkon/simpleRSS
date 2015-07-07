@@ -9,11 +9,17 @@
 /* Begin PBXBuildFile section */
 		322C21181B4BD61000367DB6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21171B4BD61000367DB6 /* main.m */; };
 		322C211B1B4BD61000367DB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C211A1B4BD61000367DB6 /* AppDelegate.m */; };
-		322C211E1B4BD61000367DB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C211D1B4BD61000367DB6 /* ViewController.m */; };
 		322C21211B4BD61000367DB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 322C211F1B4BD61000367DB6 /* Main.storyboard */; };
 		322C21231B4BD61000367DB6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 322C21221B4BD61000367DB6 /* Images.xcassets */; };
 		322C21261B4BD61000367DB6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 322C21241B4BD61000367DB6 /* LaunchScreen.xib */; };
 		322C21321B4BD61000367DB6 /* SimpleRSSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21311B4BD61000367DB6 /* SimpleRSSTests.m */; };
+		322C213E1B4BD81300367DB6 /* RSSChannelsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C213D1B4BD81300367DB6 /* RSSChannelsTableViewController.m */; };
+		322C21431B4BD92600367DB6 /* SimpleRSS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 322C21411B4BD92600367DB6 /* SimpleRSS.xcdatamodeld */; };
+		322C21481B4BD96900367DB6 /* RSSDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21471B4BD96900367DB6 /* RSSDataManager.m */; };
+		322C21571B4C26AB00367DB6 /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21561B4C26AB00367DB6 /* RSSParser.m */; };
+		322C215A1B4C569A00367DB6 /* RSSItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21591B4C569A00367DB6 /* RSSItem.m */; };
+		322C215D1B4C569B00367DB6 /* RSSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C215C1B4C569B00367DB6 /* RSSChannel.m */; };
+		322C21601B4C5F8C00367DB6 /* RSSValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C215F1B4C5F8C00367DB6 /* RSSValidator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +38,25 @@
 		322C21171B4BD61000367DB6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		322C21191B4BD61000367DB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		322C211A1B4BD61000367DB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		322C211C1B4BD61000367DB6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		322C211D1B4BD61000367DB6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		322C21201B4BD61000367DB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		322C21221B4BD61000367DB6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		322C21251B4BD61000367DB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		322C212B1B4BD61000367DB6 /* SimpleRSSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleRSSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		322C21301B4BD61000367DB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		322C21311B4BD61000367DB6 /* SimpleRSSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleRSSTests.m; sourceTree = "<group>"; };
+		322C213C1B4BD81300367DB6 /* RSSChannelsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSChannelsTableViewController.h; sourceTree = "<group>"; };
+		322C213D1B4BD81300367DB6 /* RSSChannelsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSChannelsTableViewController.m; sourceTree = "<group>"; };
+		322C21421B4BD92600367DB6 /* SimpleRSS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleRSS.xcdatamodel; sourceTree = "<group>"; };
+		322C21461B4BD96900367DB6 /* RSSDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSDataManager.h; sourceTree = "<group>"; };
+		322C21471B4BD96900367DB6 /* RSSDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSDataManager.m; sourceTree = "<group>"; };
+		322C21551B4C26AB00367DB6 /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
+		322C21561B4C26AB00367DB6 /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
+		322C21581B4C569A00367DB6 /* RSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItem.h; sourceTree = "<group>"; };
+		322C21591B4C569A00367DB6 /* RSSItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItem.m; sourceTree = "<group>"; };
+		322C215B1B4C569B00367DB6 /* RSSChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSChannel.h; sourceTree = "<group>"; };
+		322C215C1B4C569B00367DB6 /* RSSChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSChannel.m; sourceTree = "<group>"; };
+		322C215E1B4C5F8C00367DB6 /* RSSValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSValidator.h; sourceTree = "<group>"; };
+		322C215F1B4C5F8C00367DB6 /* RSSValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSValidator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,9 +100,9 @@
 			children = (
 				322C21191B4BD61000367DB6 /* AppDelegate.h */,
 				322C211A1B4BD61000367DB6 /* AppDelegate.m */,
-				322C211C1B4BD61000367DB6 /* ViewController.h */,
-				322C211D1B4BD61000367DB6 /* ViewController.m */,
-				322C211F1B4BD61000367DB6 /* Main.storyboard */,
+				322C21401B4BD8F300367DB6 /* Model */,
+				322C213B1B4BD70C00367DB6 /* View */,
+				322C213F1B4BD82400367DB6 /* Controller */,
 				322C21221B4BD61000367DB6 /* Images.xcassets */,
 				322C21241B4BD61000367DB6 /* LaunchScreen.xib */,
 				322C21151B4BD61000367DB6 /* Supporting Files */,
@@ -117,6 +134,57 @@
 				322C21301B4BD61000367DB6 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		322C213B1B4BD70C00367DB6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				322C211F1B4BD61000367DB6 /* Main.storyboard */,
+				322C21451B4BD94700367DB6 /* Cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		322C213F1B4BD82400367DB6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				322C213C1B4BD81300367DB6 /* RSSChannelsTableViewController.h */,
+				322C213D1B4BD81300367DB6 /* RSSChannelsTableViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		322C21401B4BD8F300367DB6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				322C21441B4BD93000367DB6 /* Entity */,
+				322C21411B4BD92600367DB6 /* SimpleRSS.xcdatamodeld */,
+				322C21461B4BD96900367DB6 /* RSSDataManager.h */,
+				322C21471B4BD96900367DB6 /* RSSDataManager.m */,
+				322C215E1B4C5F8C00367DB6 /* RSSValidator.h */,
+				322C215F1B4C5F8C00367DB6 /* RSSValidator.m */,
+				322C21551B4C26AB00367DB6 /* RSSParser.h */,
+				322C21561B4C26AB00367DB6 /* RSSParser.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		322C21441B4BD93000367DB6 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				322C215B1B4C569B00367DB6 /* RSSChannel.h */,
+				322C215C1B4C569B00367DB6 /* RSSChannel.m */,
+				322C21581B4C569A00367DB6 /* RSSItem.h */,
+				322C21591B4C569A00367DB6 /* RSSItem.m */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		322C21451B4BD94700367DB6 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,9 +288,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				322C211E1B4BD61000367DB6 /* ViewController.m in Sources */,
+				322C215D1B4C569B00367DB6 /* RSSChannel.m in Sources */,
+				322C21431B4BD92600367DB6 /* SimpleRSS.xcdatamodeld in Sources */,
+				322C213E1B4BD81300367DB6 /* RSSChannelsTableViewController.m in Sources */,
+				322C21601B4C5F8C00367DB6 /* RSSValidator.m in Sources */,
+				322C21571B4C26AB00367DB6 /* RSSParser.m in Sources */,
+				322C215A1B4C569A00367DB6 /* RSSItem.m in Sources */,
 				322C211B1B4BD61000367DB6 /* AppDelegate.m in Sources */,
 				322C21181B4BD61000367DB6 /* main.m in Sources */,
+				322C21481B4BD96900367DB6 /* RSSDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +501,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		322C21411B4BD92600367DB6 /* SimpleRSS.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				322C21421B4BD92600367DB6 /* SimpleRSS.xcdatamodel */,
+			);
+			currentVersion = 322C21421B4BD92600367DB6 /* SimpleRSS.xcdatamodel */;
+			path = SimpleRSS.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 322C210A1B4BD61000367DB6 /* Project object */;
 }

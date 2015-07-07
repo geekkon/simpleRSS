@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  RSSChannelsTableViewController.h
 //  SimpleRSS
 //
 //  Created by Dim on 07.07.15.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface RSSChannelsTableViewController : UITableViewController
 
 @end
-
