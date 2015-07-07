@@ -163,6 +163,7 @@
 		322C210A1B4BD61000367DB6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = RSS;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Dmitriy Baklanov";
 				TargetAttributes = {
