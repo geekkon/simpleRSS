@@ -20,7 +20,7 @@
 - (RSSChannel *)createChanel;
 - (void)removeChannel:(RSSChannel *)channel;
 
-- (void)addChannelFromURLWithString:(NSString *)stringURL;
+- (BOOL)addChannelFromURLWithString:(NSString *)stringURL;
 
 
 

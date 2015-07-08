@@ -15,7 +15,7 @@ typedef void (^FailureBlock)(NSError *error);
 
 @interface RSSValidator : NSObject
 
-- (void)getChannelDetailsFromURLWithString:(NSString *)stringURL
+- (BOOL)getChannelDetailsFromURLWithString:(NSString *)stringURL
                                  onSuccess:(ChannelBlock)channelBlock
                                  onFailure:(FailureBlock)failureBlock;
 

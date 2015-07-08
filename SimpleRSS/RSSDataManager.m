@@ -58,19 +58,18 @@
 
 #pragma mark - Public Methods
 
-- (void)addChannelFromURLWithString:(NSString *)stringURL {
+- (BOOL)addChannelFromURLWithString:(NSString *)stringURL {
     
     RSSValidator *validator = [[RSSValidator alloc] init];
     
-    [validator getChannelDetailsFromURLWithString:stringURL
+    __weak RSSDataManager *weakSelf = self;
+    
+   return [validator getChannelDetailsFromURLWithString:stringURL
                                         onSuccess:^(RSSChannel *channel) {
-
-                                            [self saveContext];
+                                            [weakSelf saveContext];
                                         } onFailure:^(NSError *error) {
                                             NSLog(@"%@", [error localizedDescription]);
                                         }];
-    
-    
 }
 
 #pragma mark - Core Data stack

@@ -7,6 +7,7 @@
 //
 
 #import "RSSParser.h"
+#import "RSSChannel.h"
 #import "RSSItem.h"
 
 @interface RSSParser () <NSXMLParserDelegate>
@@ -14,13 +15,15 @@
 @property (copy, nonatomic) ItemsBlock itemsBlock;
 @property (copy, nonatomic) FailureBlock failureBlock;
 
+@property (strong, nonatomic) RSSChannel *currentChannel;
+
 @property (strong, nonatomic) NSMutableArray *items;
 
 @end
 
 @implementation RSSParser
 
-- (void)getItemsFromURL:(NSURL *)URL
+- (void)getItemsFromChanel:(RSSChannel *)channel
               onSuccess:(ItemsBlock)itemsBlock
               onFailure:(FailureBlock)failureBlock {
     
@@ -31,6 +34,10 @@
     if (failureBlock) {
         self.failureBlock = failureBlock;
     }
+    
+    self.currentChannel = channel;
+    
+    NSURL *URL = [NSURL URLWithString:channel.channel];
     
     NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
     

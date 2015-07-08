@@ -29,7 +29,7 @@
 
 @implementation RSSValidator
 
-- (void)getChannelDetailsFromURLWithString:(NSString *)stringURL
+- (BOOL)getChannelDetailsFromURLWithString:(NSString *)stringURL
                        onSuccess:(ChannelBlock)channelBlock
                        onFailure:(FailureBlock)failureBlock {
     
@@ -51,7 +51,11 @@
     parser.shouldReportNamespacePrefixes = NO;
     parser.shouldResolveExternalEntities = NO;
     
-    [parser parse];
+    if (![parser parse]) {
+        return parser.parserError.code == NSXMLParserDelegateAbortedParseError;
+    }
+    
+    return YES;
 }
 
 #pragma mark - <NSXMLParserDelegate>

@@ -1,42 +1,31 @@
 //
-//  RSSChannelsTableViewController.m
+//  RSSItemsTableViewController.m
 //  SimpleRSS
 //
-//  Created by Dim on 07.07.15.
+//  Created by Dim on 08.07.15.
 //  Copyright (c) 2015 Dmitriy Baklanov. All rights reserved.
 //
 
-#import "RSSChannelsTableViewController.h"
 #import "RSSItemsTableViewController.h"
 #import "RSSDataManager.h"
 #import "RSSChannel.h"
+#import "RSSItem.h"
 
-NS_ENUM(NSUInteger, UIAlertViewButtonType) {
-    UIAlertViewButtonTypeCancel,
-    UIAlertViewButtonTypeDone
-};
-
-@interface RSSChannelsTableViewController ()  <NSFetchedResultsControllerDelegate>
+@interface RSSItemsTableViewController () <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
-@implementation RSSChannelsTableViewController
+@implementation RSSItemsTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
+    
+    self.navigationItem.title = self.channel.title;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-
-    
-    //
-    ////    NSString *stringURL = @"http://ria.ru/export/rss2/index.xml";
-    //    NSString *stringURL = @"http://news.rambler.ru/rss/Samara/";
-    ////    NSString *stringURL = @"http://lenta.ru/rss";
-    ////    NSString *stringURL = @"http://appleinsider.ru/feed";
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,14 +43,14 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    fetchRequest.entity = [NSEntityDescription entityForName:@"RSSChannel"
+    fetchRequest.entity = [NSEntityDescription entityForName:@"RSSItem"
                                       inManagedObjectContext:[RSSDataManager sharedManager].context];
     
     fetchRequest.fetchBatchSize = 30;
     
-
-    NSSortDescriptor *titleDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title"
-                                                                     ascending:YES];
+    
+    NSSortDescriptor *titleDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"pubDate"
+                                                                      ascending:YES];
     
     fetchRequest.sortDescriptors = @[titleDescriptor];
     
@@ -90,7 +79,7 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChannelCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemCell" forIndexPath:indexPath];
     
     [self configureCell:cell atIndexPath:indexPath];
     
@@ -148,71 +137,20 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    if ([[segue identifier] isEqualToString:@"showChannel"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setChannel:channel];
-    } 
-}
-
-#pragma mark - <UIAlertViewDelegate>
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (buttonIndex == UIAlertViewButtonTypeDone) {
-        UITextField *textField = [alertView textFieldAtIndex:0];
-        if (![[RSSDataManager sharedManager] addChannelFromURLWithString:textField.text]){
-            [alertView dismissWithClickedButtonIndex:UIAlertViewButtonTypeDone animated:YES];
-            [self showAlertWithTitle:@"Channel is not valid" andText:textField.text];
-        }
-    }
-}
-
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
-    
-    UITextField *textField = [alertView textFieldAtIndex:0];
-
-    return textField.text.length;
+//    if ([[segue identifier] isEqualToString:@"showItem"]) {
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//        [[segue destinationViewController] setChannel:channel];
+//    }
 }
 
 #pragma mark - Private Methods
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
-    RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    RSSItem *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    cell.textLabel.text = channel.title;
-    cell.detailTextLabel.text = channel.channel;
-}
-
-- (void)showAlertWithTitle:(NSString *)title andText:(NSString *)text {
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Done", nil];
-    
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    
-    UITextField *textField = [alertView textFieldAtIndex:0];
-    
-    textField.placeholder = @"URL";
-    textField.text = text;
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.returnKeyType = UIReturnKeyDone;
-    textField.enablesReturnKeyAutomatically = YES;
-    
-    [alertView show];
-}
-
-#pragma mark - Actions
-
-- (IBAction)actionAdd:(UIBarButtonItem *)sender {
-    
-    [self showAlertWithTitle:@"Add new channel" andText:nil];
+    cell.textLabel.text = item.title;
 }
 
 @end

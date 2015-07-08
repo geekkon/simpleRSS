@@ -4,16 +4,16 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
+        <!--Items Table View Controller-->
         <scene sceneID="OxR-R3-Mq0">
             <objects>
-                <tableViewController id="qat-fc-lA3" sceneMemberID="viewController">
+                <tableViewController id="qat-fc-lA3" customClass="RSSItemsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4Ub-fp-4Z7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="v9u-BM-OLj">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ItemCell" id="v9u-BM-OLj">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v9u-BM-OLj" id="tO8-TE-pBq">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -63,7 +63,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="qat-fc-lA3" kind="push" id="hAS-UG-m5i"/>
+                                    <segue destination="qat-fc-lA3" kind="push" identifier="showChannel" id="hAS-UG-m5i"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -73,6 +73,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Channels" id="4kk-hz-YbO">
+                        <barButtonItem key="backBarButtonItem" title=" " id="lF9-Vv-iGB"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XT0-LS-9uh">
                             <connections>
                                 <action selector="actionAdd:" destination="IXF-mf-KsT" id="Rqh-i4-Jyg"/>
