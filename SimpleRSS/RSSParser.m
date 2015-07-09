@@ -7,28 +7,36 @@
 //
 
 #import "RSSParser.h"
+#import "RSSDataManager.h"
 #import "RSSChannel.h"
 #import "RSSItem.h"
 
 @interface RSSParser () <NSXMLParserDelegate>
 
-@property (copy, nonatomic) ItemsBlock itemsBlock;
+@property (copy, nonatomic) SuccessBlock successBlock;
 @property (copy, nonatomic) FailureBlock failureBlock;
 
 @property (strong, nonatomic) RSSChannel *currentChannel;
+@property (strong, nonatomic) RSSItem *item;
 
-@property (strong, nonatomic) NSMutableArray *items;
+@property (strong, nonatomic) NSString *currentElement;
+
+@property (strong, nonatomic) NSMutableString *currentTitle;
+@property (strong, nonatomic) NSMutableString *currentLink;
+@property (strong, nonatomic) NSMutableString *currentInfo;
+@property (strong, nonatomic) NSMutableString *currentGuid;
+@property (strong, nonatomic) NSMutableString *currentPubDate;
 
 @end
 
 @implementation RSSParser
 
 - (void)getItemsFromChanel:(RSSChannel *)channel
-              onSuccess:(ItemsBlock)itemsBlock
-              onFailure:(FailureBlock)failureBlock {
+                 onSuccess:(SuccessBlock)successBlock
+                 onFailure:(FailureBlock)failureBlock {
     
-    if (itemsBlock) {
-        self.itemsBlock = itemsBlock;
+    if (successBlock) {
+        self.successBlock = successBlock;
     }
     
     if (failureBlock) {
@@ -50,43 +58,93 @@
     [parser parse];
 }
 
-#pragma mark - Private
+#pragma mark - Private Methods
+
++ (NSDateFormatter *)dateFormatter {
+    
+    static NSDateFormatter *dateFormatter = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        // Fri, 10 Jul 2015 00:59:00 +0300
+        dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    });
+    
+    return dateFormatter;
+}
+
+- (NSString *)trimString:(NSString *)string {
+    
+    return [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSDate *)dateFromString:(NSString *)string {
+
+    return [[RSSParser dateFormatter] dateFromString:[self trimString:string]];
+}
 
 #pragma mark - <NSXMLParserDelegate>
 
-- (void)parserDidStartDocument:(NSXMLParser *)parser {
-    
-    NSLog(@"parserDidStartDocument");
-
-}
-
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
-
+    
+    self.currentElement = elementName;
+    
+    if ([elementName isEqualToString:@"item"]) {
+        self.currentTitle = [NSMutableString string];
+        self.currentInfo = [NSMutableString string];
+        self.currentLink = [NSMutableString string];
+        self.currentPubDate = [NSMutableString string];
+        self.currentGuid = [NSMutableString string];
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
     
+    if ([self.currentElement isEqualToString:@"title"]) {
+        [self.currentTitle appendString:string];
+    } else if ([self.currentElement isEqualToString:@"description"]) {
+        [self.currentInfo appendString:string];
+    } else if ([self.currentElement isEqualToString:@"link"]) {
+        [self.currentLink appendString:string];
+    } else if ([self.currentElement isEqualToString:@"pubDate"]) {
+        [self.currentPubDate appendString:string];
+    } else if ([self.currentElement isEqualToString:@"guid"]) {
+        [self.currentGuid appendString:string];
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     
+    if ([elementName isEqualToString:@"item"]) {
+     
+        if (![[RSSDataManager sharedManager] foundGuid:[self trimString:self.currentGuid]
+                                   inLocalChannelStore:self.currentChannel]) {
+            
+            RSSItem *item = [[RSSDataManager sharedManager] createItemInChannel:self.currentChannel];
+            
+            item.title = [self trimString:self.currentTitle];
+            item.info  = [self trimString:self.currentInfo];
+            item.link  = [self trimString:self.currentLink];
+            item.guid  = [self trimString:self.currentGuid];
+            item.pubDate = [self dateFromString:self.currentPubDate];
+        }
+    }
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    
-    NSLog(@"parserDidEndDocument");
-    
+    if (self.successBlock) {
+        self.successBlock();
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-    NSLog(@"parseErrorOccurred");
     if (self.failureBlock) {
         self.failureBlock(parseError);
     }
 }
 
 - (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError {
-    NSLog(@"validationErrorOccurred");
     if (self.failureBlock) {
         self.failureBlock(validationError);
     }

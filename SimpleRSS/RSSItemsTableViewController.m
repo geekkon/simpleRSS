@@ -7,6 +7,7 @@
 //
 
 #import "RSSItemsTableViewController.h"
+#import "RSSItemTableViewCell.h"
 #import "RSSDataManager.h"
 #import "RSSChannel.h"
 #import "RSSItem.h"
@@ -14,6 +15,8 @@
 @interface RSSItemsTableViewController () <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (nonatomic) BOOL loaded;
 
 @end
 
@@ -24,8 +27,36 @@
     
     self.navigationItem.title = self.channel.title;
     
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"EEEE, dd MMMM HH:mm";
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self
+                       action:@selector(refresh:)
+             forControlEvents:UIControlEventValueChanged];
+    
+    [self refresh:refreshControl];
+    
+    self.refreshControl = refreshControl;
+
+    self.tableView.estimatedRowHeight = 45.0;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    self.loaded = YES;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+}
+
+// bug fixing for auto layout self sizing cells
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.loaded) {
+        [self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+        
+        self.loaded = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,13 +77,14 @@
     fetchRequest.entity = [NSEntityDescription entityForName:@"RSSItem"
                                       inManagedObjectContext:[RSSDataManager sharedManager].context];
     
-    fetchRequest.fetchBatchSize = 30;
-    
-    
     NSSortDescriptor *titleDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"pubDate"
-                                                                      ascending:YES];
+                                                                      ascending:NO];
     
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@", self.channel];
+    
+    fetchRequest.fetchBatchSize = 20;
     fetchRequest.sortDescriptors = @[titleDescriptor];
+    fetchRequest.predicate = predicate;
     
     _fetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
@@ -77,9 +109,9 @@
     return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (RSSItemTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemCell" forIndexPath:indexPath];
+    RSSItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemCell" forIndexPath:indexPath];
     
     [self configureCell:cell atIndexPath:indexPath];
     
@@ -146,11 +178,24 @@
 
 #pragma mark - Private Methods
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(RSSItemTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
     RSSItem *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    cell.textLabel.text = item.title;
+    cell.pubDateLabel.text = [self.dateFormatter stringFromDate:item.pubDate];
+    cell.titleLabel.text = item.title;
+}
+
+#pragma mark - Actions
+
+- (void)refresh:(UIRefreshControl *)sender {
+    
+    [sender beginRefreshing];
+    
+    [[RSSDataManager sharedManager] loadItemsFromChannel:self.channel
+                                              completion:^{
+                                                  [sender endRefreshing];
+                                              }];
 }
 
 @end

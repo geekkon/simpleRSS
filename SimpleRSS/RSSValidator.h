@@ -10,13 +10,13 @@
 
 @class RSSChannel;
 
-typedef void (^ChannelBlock)(RSSChannel *channel);
+typedef void (^SuccessBlock)(void);
 typedef void (^FailureBlock)(NSError *error);
 
 @interface RSSValidator : NSObject
 
 - (BOOL)getChannelDetailsFromURLWithString:(NSString *)stringURL
-                                 onSuccess:(ChannelBlock)channelBlock
+                                 onSuccess:(SuccessBlock)successBlock
                                  onFailure:(FailureBlock)failureBlock;
 
 @end

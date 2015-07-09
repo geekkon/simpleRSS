@@ -42,6 +42,20 @@
 
 #pragma mark - RSSChannel Managment
 
+- (BOOL)addChannelFromURLWithString:(NSString *)stringURL {
+    
+    RSSValidator *validator = [[RSSValidator alloc] init];
+    
+    __weak RSSDataManager *weakSelf = self;
+    
+   return [validator getChannelDetailsFromURLWithString:stringURL
+                                        onSuccess:^{
+                                            [weakSelf saveContext];
+                                        } onFailure:^(NSError *error) {
+                                            NSLog(@"%@", [error localizedDescription]);
+                                        }];
+}
+
 - (RSSChannel *)createChanel {
     
     RSSChannel *channel = [NSEntityDescription insertNewObjectForEntityForName:@"RSSChannel"
@@ -56,20 +70,52 @@
     [self saveContext];
 }
 
-#pragma mark - Public Methods
+#pragma mark - RSSItem Managment
 
-- (BOOL)addChannelFromURLWithString:(NSString *)stringURL {
+- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(CompletionBlock)block {
     
-    RSSValidator *validator = [[RSSValidator alloc] init];
+    RSSParser *parser = [[RSSParser alloc] init];
     
     __weak RSSDataManager *weakSelf = self;
     
-   return [validator getChannelDetailsFromURLWithString:stringURL
-                                        onSuccess:^(RSSChannel *channel) {
-                                            [weakSelf saveContext];
-                                        } onFailure:^(NSError *error) {
-                                            NSLog(@"%@", [error localizedDescription]);
-                                        }];
+    [parser getItemsFromChanel:channel
+                     onSuccess:^{
+                         [weakSelf saveContext];
+                         if (block) {
+                             block();
+                         }
+                     }
+                     onFailure:^(NSError *error) {
+                         NSLog(@"%@", [error localizedDescription]);
+                         if (block) {
+                             block();
+                         }
+                     }];
+}
+
+- (RSSItem *)createItemInChannel:(RSSChannel *)channel {
+    
+    RSSItem *item = [NSEntityDescription insertNewObjectForEntityForName:@"RSSItem"
+                                                        inManagedObjectContext:self.managedObjectContext];
+    item.channel = channel;
+    return item;
+}
+
+- (BOOL)foundGuid:(NSString *)guid inLocalChannelStore:(RSSChannel *)channel {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    fetchRequest.entity = [NSEntityDescription entityForName:@"RSSItem"
+                                      inManagedObjectContext:[RSSDataManager sharedManager].context];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@ AND guid == %@", channel, guid];
+    
+    fetchRequest.predicate = predicate;
+    
+    NSError *requestError = nil;
+    NSArray *resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&requestError];
+    
+    return [resultArray count];
 }
 
 #pragma mark - Core Data stack
@@ -131,7 +177,8 @@
 
 - (NSURL *)applicationDocumentsDirectory {
     
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
+                                                   inDomains:NSUserDomainMask] lastObject];
 }
 
 - (void)saveContext {

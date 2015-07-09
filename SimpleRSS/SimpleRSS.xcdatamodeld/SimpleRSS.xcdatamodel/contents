@@ -11,12 +11,12 @@
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="info" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pubDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pubDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RSSChannel" inverseName="items" inverseEntity="RSSChannel" syncable="YES"/>
     </entity>
     <elements>
         <element name="RSSChannel" positionX="-153" positionY="-45" width="128" height="118"/>
-        <element name="RSSItem" positionX="16" positionY="54" width="128" height="133"/>
+        <element name="RSSItem" positionX="16" positionY="54" width="128" height="135"/>
     </elements>
 </model>

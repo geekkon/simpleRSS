@@ -17,7 +17,7 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * info;
 @property (nonatomic, retain) NSString * link;
-@property (nonatomic, retain) NSString * pubDate;
+@property (nonatomic, retain) NSDate * pubDate;
 @property (nonatomic, retain) RSSChannel *channel;
 
 @end

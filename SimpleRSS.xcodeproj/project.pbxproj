@@ -21,6 +21,7 @@
 		322C215D1B4C569B00367DB6 /* RSSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C215C1B4C569B00367DB6 /* RSSChannel.m */; };
 		322C21601B4C5F8C00367DB6 /* RSSValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C215F1B4C5F8C00367DB6 /* RSSValidator.m */; };
 		322C21631B4D2F4E00367DB6 /* RSSItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21621B4D2F4E00367DB6 /* RSSItemsTableViewController.m */; };
+		322C21661B4D501B00367DB6 /* RSSItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21651B4D501B00367DB6 /* RSSItemTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		322C215F1B4C5F8C00367DB6 /* RSSValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSValidator.m; sourceTree = "<group>"; };
 		322C21611B4D2F4E00367DB6 /* RSSItemsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItemsTableViewController.h; sourceTree = "<group>"; };
 		322C21621B4D2F4E00367DB6 /* RSSItemsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItemsTableViewController.m; sourceTree = "<group>"; };
+		322C21641B4D501B00367DB6 /* RSSItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItemTableViewCell.h; sourceTree = "<group>"; };
+		322C21651B4D501B00367DB6 /* RSSItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItemTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +191,8 @@
 		322C21451B4BD94700367DB6 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				322C21641B4D501B00367DB6 /* RSSItemTableViewCell.h */,
+				322C21651B4D501B00367DB6 /* RSSItemTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -297,6 +302,7 @@
 				322C21431B4BD92600367DB6 /* SimpleRSS.xcdatamodeld in Sources */,
 				322C213E1B4BD81300367DB6 /* RSSChannelsTableViewController.m in Sources */,
 				322C21601B4C5F8C00367DB6 /* RSSValidator.m in Sources */,
+				322C21661B4D501B00367DB6 /* RSSItemTableViewCell.m in Sources */,
 				322C21571B4C26AB00367DB6 /* RSSParser.m in Sources */,
 				322C21631B4D2F4E00367DB6 /* RSSItemsTableViewController.m in Sources */,
 				322C215A1B4C569A00367DB6 /* RSSItem.m in Sources */,

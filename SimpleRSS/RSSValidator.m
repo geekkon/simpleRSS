@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) NSString *stringURL;
 
-@property (copy, nonatomic) ChannelBlock channelBlock;
+@property (copy, nonatomic) SuccessBlock successBlock;
 @property (copy, nonatomic) FailureBlock failureBlock;
 
 @property (strong, nonatomic) RSSChannel *channel;
@@ -30,11 +30,11 @@
 @implementation RSSValidator
 
 - (BOOL)getChannelDetailsFromURLWithString:(NSString *)stringURL
-                       onSuccess:(ChannelBlock)channelBlock
+                       onSuccess:(SuccessBlock)successBlock
                        onFailure:(FailureBlock)failureBlock {
     
-    if (channelBlock) {
-        self.channelBlock = channelBlock;
+    if (successBlock) {
+        self.successBlock = successBlock;
     }
     
     if (failureBlock) {
@@ -66,6 +66,7 @@
     
     if ([elementName isEqualToString:@"channel"]) {
         self.channel = [[RSSDataManager sharedManager] createChanel];
+        self.channel.channel = self.stringURL;
     } else if ([elementName isEqualToString:@"title"]) {
         self.currentTitle = [NSMutableString string];
     } else if ([elementName isEqualToString:@"description"]) {
@@ -73,14 +74,9 @@
     } else if ([elementName isEqualToString:@"link"]) {
         self.currentLink = [NSMutableString string];
     } else if ([elementName isEqualToString:@"item"]) {
-        
-        self.channel.channel = self.stringURL;
-        
-        if (self.channelBlock) {
-            __weak RSSValidator *weakSelf = self;
-            self.channelBlock(weakSelf.channel);
+        if (self.successBlock) {
+            self.successBlock();
         }
-        
         [parser abortParsing];
     }
 }

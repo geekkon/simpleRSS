@@ -10,6 +10,9 @@
 @import CoreData;
 
 @class RSSChannel;
+@class RSSItem;
+
+typedef void (^CompletionBlock)(void);
 
 @interface RSSDataManager : NSObject
 
@@ -17,11 +20,12 @@
 
 + (RSSDataManager *)sharedManager;
 
+- (BOOL)addChannelFromURLWithString:(NSString *)stringURL;
 - (RSSChannel *)createChanel;
 - (void)removeChannel:(RSSChannel *)channel;
 
-- (BOOL)addChannelFromURLWithString:(NSString *)stringURL;
-
-
+- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(CompletionBlock)block;
+- (RSSItem *)createItemInChannel:(RSSChannel *)channel;
+- (BOOL)foundGuid:(NSString *)guid inLocalChannelStore:(RSSChannel *)chanel;
 
 @end

@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 @class RSSChannel;
 
-typedef void (^ItemsBlock)(NSArray *items);
+typedef void (^SuccessBlock)(void);
 typedef void (^FailureBlock)(NSError *error);
 
 @interface RSSParser : NSObject
 
 - (void)getItemsFromChanel:(RSSChannel *)channel
-              onSuccess:(ItemsBlock)itemsBlock
+              onSuccess:(SuccessBlock)successBlock
               onFailure:(FailureBlock)failureBlock;
 
 @end

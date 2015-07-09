@@ -8,17 +8,42 @@
         <scene sceneID="OxR-R3-Mq0">
             <objects>
                 <tableViewController id="qat-fc-lA3" customClass="RSSItemsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4Ub-fp-4Z7">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="4Ub-fp-4Z7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ItemCell" id="v9u-BM-OLj">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="45" id="v9u-BM-OLj" customClass="RSSItemTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v9u-BM-OLj" id="tO8-TE-pBq">
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pubDate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ne8-ig-Qiu">
+                                            <rect key="frame" x="8" y="28" width="279" height="14.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Title" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Es9-cd-xqy">
+                                            <rect key="frame" x="8" y="8" width="279" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="ne8-ig-Qiu" secondAttribute="bottom" constant="2" id="NIX-sV-PvK"/>
+                                        <constraint firstItem="ne8-ig-Qiu" firstAttribute="top" secondItem="Es9-cd-xqy" secondAttribute="bottom" constant="2" id="O7Y-gD-9YI"/>
+                                        <constraint firstItem="Es9-cd-xqy" firstAttribute="leading" secondItem="tO8-TE-pBq" secondAttribute="leading" constant="8" id="Txi-pU-0FI"/>
+                                        <constraint firstItem="Es9-cd-xqy" firstAttribute="top" secondItem="tO8-TE-pBq" secondAttribute="top" constant="8" id="hMZ-hn-BgC"/>
+                                        <constraint firstItem="ne8-ig-Qiu" firstAttribute="leading" secondItem="tO8-TE-pBq" secondAttribute="leading" constant="8" id="wXr-Mx-jNP"/>
+                                        <constraint firstAttribute="trailing" secondItem="ne8-ig-Qiu" secondAttribute="trailing" id="x9C-Yu-K0S"/>
+                                        <constraint firstAttribute="trailing" secondItem="Es9-cd-xqy" secondAttribute="trailing" id="zbY-U4-zQa"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="pubDateLabel" destination="ne8-ig-Qiu" id="ZRf-5R-2PD"/>
+                                    <outlet property="titleLabel" destination="Es9-cd-xqy" id="kkC-6U-WKL"/>
                                     <segue destination="10e-sY-zpN" kind="push" id="R28-w1-ULH"/>
                                 </connections>
                             </tableViewCell>
