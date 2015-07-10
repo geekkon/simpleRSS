@@ -117,7 +117,7 @@
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     
     if ([elementName isEqualToString:@"item"]) {
-     
+        
         if (![[RSSDataManager sharedManager] foundGuid:[self trimString:self.currentGuid]
                                    inLocalChannelStore:self.currentChannel]) {
             
@@ -134,26 +134,19 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
     if (self.successBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.successBlock();
-        });
+        self.successBlock();
     }
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     if (self.failureBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.failureBlock(parseError);
-        });
-
+        self.failureBlock(parseError);
     }
 }
 
 - (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError {
     if (self.failureBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.failureBlock(validationError);
-        });
+        self.failureBlock(validationError);
     }
 }
 
