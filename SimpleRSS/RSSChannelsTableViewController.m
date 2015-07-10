@@ -16,6 +16,8 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
     UIAlertViewButtonTypeDone
 };
 
+NSString * const kApplicationDidLaunch = @"applicationDidLaunch";
+
 @interface RSSChannelsTableViewController ()  <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
@@ -31,12 +33,13 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
     // self.clearsSelectionOnViewWillAppear = NO;
 
     
-    //
-    ////    NSString *stringURL = @"http://ria.ru/export/rss2/index.xml";
-    //    NSString *stringURL = @"http://news.rambler.ru/rss/Samara/";
-    ////    NSString *stringURL = @"http://lenta.ru/rss";
-    ////    NSString *stringURL = @"http://appleinsider.ru/feed";
-    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kApplicationDidLaunch]) {
+        
+        [self addPresetChannels];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kApplicationDidLaunch];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -176,6 +179,20 @@ NS_ENUM(NSUInteger, UIAlertViewButtonType) {
 }
 
 #pragma mark - Private Methods
+
+- (void)addPresetChannels {
+    
+    [[RSSDataManager sharedManager] addChannelFromURLWithString:@"http://lenta.ru/rss"];
+    [[RSSDataManager sharedManager] addChannelFromURLWithString:@"http://appleinsider.ru/feed"];
+    [[RSSDataManager sharedManager] addChannelFromURLWithString:@"http://news.rambler.ru/rss/Samara/"];
+    
+    //
+    ////    NSString *stringURL = @"http://ria.ru/export/rss2/index.xml";
+    //    NSString *stringURL = @"http://news.rambler.ru/rss/Samara/";
+    ////    NSString *stringURL = @"http://lenta.ru/rss";
+    ////    NSString *stringURL = @"http://appleinsider.ru/feed";
+    
+}
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     

@@ -44,7 +44,7 @@
                                 <connections>
                                     <outlet property="pubDateLabel" destination="ne8-ig-Qiu" id="ZRf-5R-2PD"/>
                                     <outlet property="titleLabel" destination="Es9-cd-xqy" id="kkC-6U-WKL"/>
-                                    <segue destination="10e-sY-zpN" kind="push" id="R28-w1-ULH"/>
+                                    <segue destination="10e-sY-zpN" kind="push" identifier="showItem" id="R28-w1-ULH"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -110,10 +110,10 @@
             </objects>
             <point key="canvasLocation" x="988" y="349"/>
         </scene>
-        <!--View Controller-->
+        <!--Item View Controller-->
         <scene sceneID="eNk-hy-ds0">
             <objects>
-                <viewController id="10e-sY-zpN" sceneMemberID="viewController">
+                <viewController id="10e-sY-zpN" customClass="RSSItemViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nyu-E9-XYb"/>
                         <viewControllerLayoutGuide type="bottom" id="pLi-Qf-Z64"/>
@@ -121,9 +121,44 @@
                     <view key="view" contentMode="scaleToFill" id="PRi-EK-MQl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MV0-bW-ppl">
+                                <rect key="frame" x="16" y="72" width="288" height="19.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Info" translatesAutoresizingMaskIntoConstraints="NO" id="9ge-dV-1Ga">
+                                <rect key="frame" x="16" y="91" width="288" height="468.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9ge-dV-1Ga" firstAttribute="top" secondItem="MV0-bW-ppl" secondAttribute="bottom" id="K3x-ni-TMY"/>
+                            <constraint firstAttribute="trailing" secondItem="MV0-bW-ppl" secondAttribute="trailing" constant="16" id="Oc1-rX-gvf"/>
+                            <constraint firstItem="MV0-bW-ppl" firstAttribute="top" secondItem="nyu-E9-XYb" secondAttribute="bottom" constant="8" id="UEg-R9-Cnu"/>
+                            <constraint firstItem="9ge-dV-1Ga" firstAttribute="leading" secondItem="PRi-EK-MQl" secondAttribute="leading" constant="16" id="XO1-3s-4Un"/>
+                            <constraint firstAttribute="centerX" secondItem="9ge-dV-1Ga" secondAttribute="centerX" id="fAZ-0R-sgm"/>
+                            <constraint firstItem="MV0-bW-ppl" firstAttribute="leading" secondItem="PRi-EK-MQl" secondAttribute="leading" constant="16" id="hmM-Vp-nc9"/>
+                            <constraint firstItem="pLi-Qf-Z64" firstAttribute="top" secondItem="9ge-dV-1Ga" secondAttribute="bottom" constant="8" id="ld2-al-c7j"/>
+                            <constraint firstAttribute="centerX" secondItem="MV0-bW-ppl" secondAttribute="centerX" id="vm4-le-dk1"/>
+                            <constraint firstAttribute="trailing" secondItem="9ge-dV-1Ga" secondAttribute="trailing" constant="16" id="yr9-Ef-3CP"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="SGN-xW-V8E"/>
+                    <navigationItem key="navigationItem" id="SGN-xW-V8E">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="Bj1-k6-eUv">
+                            <connections>
+                                <action selector="actionSheet:" destination="10e-sY-zpN" id="Vy8-om-zO2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="infoTextView" destination="9ge-dV-1Ga" id="chH-k2-G9g"/>
+                        <outlet property="titleLabel" destination="MV0-bW-ppl" id="uhe-aP-wXY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecR-1x-dG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

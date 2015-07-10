@@ -22,6 +22,7 @@
 		322C21601B4C5F8C00367DB6 /* RSSValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C215F1B4C5F8C00367DB6 /* RSSValidator.m */; };
 		322C21631B4D2F4E00367DB6 /* RSSItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21621B4D2F4E00367DB6 /* RSSItemsTableViewController.m */; };
 		322C21661B4D501B00367DB6 /* RSSItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 322C21651B4D501B00367DB6 /* RSSItemTableViewCell.m */; };
+		32307B431B4FCDAE00C0A7BB /* RSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32307B421B4FCDAE00C0A7BB /* RSSItemViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		322C21621B4D2F4E00367DB6 /* RSSItemsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItemsTableViewController.m; sourceTree = "<group>"; };
 		322C21641B4D501B00367DB6 /* RSSItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItemTableViewCell.h; sourceTree = "<group>"; };
 		322C21651B4D501B00367DB6 /* RSSItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItemTableViewCell.m; sourceTree = "<group>"; };
+		32307B411B4FCDAE00C0A7BB /* RSSItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItemViewController.h; sourceTree = "<group>"; };
+		32307B421B4FCDAE00C0A7BB /* RSSItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItemViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,8 @@
 				322C213D1B4BD81300367DB6 /* RSSChannelsTableViewController.m */,
 				322C21611B4D2F4E00367DB6 /* RSSItemsTableViewController.h */,
 				322C21621B4D2F4E00367DB6 /* RSSItemsTableViewController.m */,
+				32307B411B4FCDAE00C0A7BB /* RSSItemViewController.h */,
+				32307B421B4FCDAE00C0A7BB /* RSSItemViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32307B431B4FCDAE00C0A7BB /* RSSItemViewController.m in Sources */,
 				322C215D1B4C569B00367DB6 /* RSSChannel.m in Sources */,
 				322C21431B4BD92600367DB6 /* SimpleRSS.xcdatamodeld in Sources */,
 				322C213E1B4BD81300367DB6 /* RSSChannelsTableViewController.m in Sources */,
@@ -503,6 +509,7 @@
 				322C21371B4BD61000367DB6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		322C21381B4BD61000367DB6 /* Build configuration list for PBXNativeTarget "SimpleRSSTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +518,7 @@
 				322C213A1B4BD61000367DB6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

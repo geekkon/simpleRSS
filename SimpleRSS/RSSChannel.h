@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class RSSItem;
-
 @interface RSSChannel : NSManagedObject
 
 @property (nonatomic, retain) NSString * title;

@@ -8,6 +8,7 @@
 
 #import "RSSItemsTableViewController.h"
 #import "RSSItemTableViewCell.h"
+#import "RSSItemViewController.h"
 #import "RSSDataManager.h"
 #import "RSSChannel.h"
 #import "RSSItem.h"
@@ -118,17 +119,17 @@
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [[RSSDataManager sharedManager] removeChannel:channel];
-    }
-}
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return YES;
+//}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//        [[RSSDataManager sharedManager] removeChannel:channel];
+//    }
+//}
 
 #pragma mark - <NSFetchedResultsControllerDelegate>
 
@@ -169,11 +170,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-//    if ([[segue identifier] isEqualToString:@"showItem"]) {
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//        RSSChannel *channel = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//        [[segue destinationViewController] setChannel:channel];
-//    }
+    if ([[segue identifier] isEqualToString:@"showItem"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        RSSItem *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [[segue destinationViewController] setItem:item];
+    }
 }
 
 #pragma mark - Private Methods
