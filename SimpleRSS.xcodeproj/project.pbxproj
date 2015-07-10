@@ -107,8 +107,6 @@
 		322C21141B4BD61000367DB6 /* SimpleRSS */ = {
 			isa = PBXGroup;
 			children = (
-				322C21191B4BD61000367DB6 /* AppDelegate.h */,
-				322C211A1B4BD61000367DB6 /* AppDelegate.m */,
 				322C21401B4BD8F300367DB6 /* Model */,
 				322C213B1B4BD70C00367DB6 /* View */,
 				322C213F1B4BD82400367DB6 /* Controller */,
@@ -122,6 +120,8 @@
 		322C21151B4BD61000367DB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				322C21191B4BD61000367DB6 /* AppDelegate.h */,
+				322C211A1B4BD61000367DB6 /* AppDelegate.m */,
 				322C21161B4BD61000367DB6 /* Info.plist */,
 				322C21171B4BD61000367DB6 /* main.m */,
 			);
