@@ -78,19 +78,30 @@
     
     __weak RSSDataManager *weakSelf = self;
     
-    [parser getItemsFromChanel:channel
-                     onSuccess:^{
-                         [weakSelf saveContext];
-                         if (block) {
-                             block();
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        [parser getItemsFromChanel:channel
+                         onSuccess:^{
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 
+                                 [weakSelf saveContext];
+                                 
+                                 if (block) {
+                                     block();
+                                 }
+                             });
                          }
-                     }
-                     onFailure:^(NSError *error) {
-                         NSLog(@"%@", [error localizedDescription]);
-                         if (block) {
-                             block();
-                         }
-                     }];
+                         onFailure:^(NSError *error) {
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 
+                                 NSLog(@"%@", [error localizedDescription]);
+                                 
+                                 if (block) {
+                                     block();
+                                 }
+                             });
+                         }];
+    });
 }
 
 - (RSSItem *)createItemInChannel:(RSSChannel *)channel {
