@@ -16,13 +16,5 @@
 @property (nonatomic, retain) NSString * link;
 @property (nonatomic, retain) NSString * channel;
 @property (nonatomic, retain) NSSet *items;
-@end
-
-@interface RSSChannel (CoreDataGeneratedAccessors)
-
-- (void)addItemsObject:(RSSItem *)value;
-- (void)removeItemsObject:(RSSItem *)value;
-- (void)addItems:(NSSet *)values;
-- (void)removeItems:(NSSet *)values;
 
 @end
