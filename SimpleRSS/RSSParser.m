@@ -134,19 +134,26 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
     if (self.successBlock) {
-        self.successBlock();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.successBlock();
+        });
     }
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     if (self.failureBlock) {
-        self.failureBlock(parseError);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.failureBlock(parseError);
+        });
+
     }
 }
 
 - (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError {
     if (self.failureBlock) {
-        self.failureBlock(validationError);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.failureBlock(validationError);
+        });
     }
 }
 

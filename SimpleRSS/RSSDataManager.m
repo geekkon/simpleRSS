@@ -82,24 +82,20 @@
         
         [parser getItemsFromChanel:channel
                          onSuccess:^{
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 
-                                 [weakSelf saveContext];
-                                 
+                             
+                             [weakSelf saveContext];
+                             
                                  if (block) {
                                      block();
                                  }
-                             });
                          }
                          onFailure:^(NSError *error) {
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 
+                             
                                  NSLog(@"%@", [error localizedDescription]);
                                  
                                  if (block) {
                                      block();
                                  }
-                             });
                          }];
     });
 }
