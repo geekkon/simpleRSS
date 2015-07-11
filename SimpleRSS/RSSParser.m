@@ -118,17 +118,26 @@
     
     if ([elementName isEqualToString:@"item"]) {
         
-        if (![[RSSDataManager sharedManager] foundGuid:[self trimString:self.currentGuid]
-                                   inLocalChannelStore:self.currentChannel]) {
-            
-            RSSItem *item = [[RSSDataManager sharedManager] createItemInChannel:self.currentChannel];
-            
-            item.title = [self trimString:self.currentTitle];
-            item.info  = [self trimString:self.currentInfo];
-            item.link  = [self trimString:self.currentLink];
-            item.guid  = [self trimString:self.currentGuid];
-            item.pubDate = [self dateFromString:self.currentPubDate];
-        }
+        NSString *title = [self trimString:self.currentTitle];
+        NSString *info  = [self trimString:self.currentInfo];
+        NSString *link  = [self trimString:self.currentLink];
+        NSString *guid  = [self trimString:self.currentGuid];
+        NSDate *pubDate = [self dateFromString:self.currentPubDate];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+        
+            if (![[RSSDataManager sharedManager] foundGuid:[self trimString:self.currentGuid]
+                                       inLocalChannelStore:self.currentChannel]) {
+                
+                RSSItem *item = [[RSSDataManager sharedManager] createItemInChannel:self.currentChannel];
+                
+                item.title = title;
+                item.info  = info;
+                item.link  = link;
+                item.guid  = guid;
+                item.pubDate = pubDate;
+            }
+        });
     }
 }
 

@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (nonatomic) dispatch_queue_t parserQueue;
+
 @end
 
 @implementation RSSDataManager
@@ -38,6 +40,15 @@
 
 - (NSManagedObjectContext *)context {
     return self.managedObjectContext;
+}
+
+- (dispatch_queue_t)parserQueue {
+    
+    if (!_parserQueue) {
+        _parserQueue = dispatch_queue_create("simple.rss.parser.queue", DISPATCH_QUEUE_SERIAL);
+    }
+    
+    return _parserQueue;
 }
 
 #pragma mark - RSSChannel Managment
@@ -78,23 +89,32 @@
     
     __weak RSSDataManager *weakSelf = self;
     
-    [parser getItemsFromChanel:channel
-                     onSuccess:^{
-                         
-                         [weakSelf saveContext];
-                         
-                         if (block) {
-                             block();
+    dispatch_sync([RSSDataManager sharedManager].parserQueue, ^{
+    
+        [parser getItemsFromChanel:channel
+                         onSuccess:^{
+                             dispatch_sync(dispatch_get_main_queue(), ^{
+                             
+                                 [weakSelf saveContext];
+                             
+                                 if (block) {
+                                     block();
+                                 }
+                             });
+         
                          }
-                     }
-                     onFailure:^(NSError *error) {
-                         
-                         NSLog(@"%@", [error localizedDescription]);
-                         
-                         if (block) {
-                             block();
-                         }
-                     }];
+                         onFailure:^(NSError *error) {
+                             dispatch_sync(dispatch_get_main_queue(), ^{
+                             
+                                 NSLog(@"%@", [error localizedDescription]);
+                                 
+                                 if (block) {
+                                     block();
+                                 }
+                             });
+
+                         }];
+    });
 }
 
 - (RSSItem *)createItemInChannel:(RSSChannel *)channel {
@@ -115,6 +135,8 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@ AND guid == %@", channel, guid];
     
     fetchRequest.predicate = predicate;
+    
+    fetchRequest.fetchLimit = 1;
     
     NSError *requestError = nil;
     NSArray *resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&requestError];
