@@ -12,7 +12,7 @@
 @class RSSChannel;
 @class RSSItem;
 
-typedef void (^CompletionBlock)(void);
+typedef void (^VoidBlock)(void);
 
 @interface RSSDataManager : NSObject
 
@@ -24,8 +24,6 @@ typedef void (^CompletionBlock)(void);
 - (RSSChannel *)createChanel;
 - (void)removeChannel:(RSSChannel *)channel;
 
-- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(CompletionBlock)block;
-- (RSSItem *)createItemInChannel:(RSSChannel *)channel;
-- (BOOL)foundGuid:(NSString *)guid inLocalChannelStore:(RSSChannel *)chanel;
+- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(VoidBlock)block;
 
 @end

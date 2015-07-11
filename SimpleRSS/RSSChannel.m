@@ -8,7 +8,6 @@
 
 #import "RSSChannel.h"
 
-
 @implementation RSSChannel
 
 @dynamic title;

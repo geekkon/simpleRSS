@@ -7,17 +7,13 @@
 //
 
 #import "RSSParser.h"
-#import "RSSDataManager.h"
-#import "RSSChannel.h"
-#import "RSSItem.h"
+#import "RSSParsedItem.h"
 
 @interface RSSParser () <NSXMLParserDelegate>
 
-@property (copy, nonatomic) SuccessBlock successBlock;
-@property (copy, nonatomic) FailureBlock failureBlock;
+@property (copy, nonatomic) CompletionBlock completionBlock;
 
-@property (strong, nonatomic) RSSChannel *currentChannel;
-@property (strong, nonatomic) RSSItem *item;
+@property (strong, nonatomic) NSMutableArray *items;
 
 @property (strong, nonatomic) NSString *currentElement;
 
@@ -31,21 +27,14 @@
 
 @implementation RSSParser
 
-- (void)getItemsFromChanel:(RSSChannel *)channel
-                 onSuccess:(SuccessBlock)successBlock
-                 onFailure:(FailureBlock)failureBlock {
+- (void)getItemsFromURLWithString:(NSString *)string
+                  completionBlock:(CompletionBlock)completionBlock {
     
-    if (successBlock) {
-        self.successBlock = successBlock;
+    if (completionBlock) {
+        self.completionBlock = completionBlock;
     }
     
-    if (failureBlock) {
-        self.failureBlock = failureBlock;
-    }
-    
-    self.currentChannel = channel;
-    
-    NSURL *URL = [NSURL URLWithString:channel.channel];
+    NSURL *URL = [NSURL URLWithString:string];
     
     NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
     
@@ -66,9 +55,11 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        NSLocale *en_US_POSIX = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = en_US_POSIX;
         // Fri, 10 Jul 2015 00:59:00 +0300
-        dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+        dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z ";
     });
     
     return dateFormatter;
@@ -85,6 +76,11 @@
 }
 
 #pragma mark - <NSXMLParserDelegate>
+
+- (void)parserDidStartDocument:(NSXMLParser *)parser {
+    
+    self.items = [NSMutableArray array];
+}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
     
@@ -118,44 +114,36 @@
     
     if ([elementName isEqualToString:@"item"]) {
         
-        NSString *title = [self trimString:self.currentTitle];
-        NSString *info  = [self trimString:self.currentInfo];
-        NSString *link  = [self trimString:self.currentLink];
-        NSString *guid  = [self trimString:self.currentGuid];
-        NSDate *pubDate = [self dateFromString:self.currentPubDate];
+        RSSParsedItem *item = [[RSSParsedItem alloc] init];
         
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        item.title = [self trimString:self.currentTitle];
+        item.info  = [self trimString:self.currentInfo];
+        item.link  = [self trimString:self.currentLink];
+        item.guid  = [self trimString:self.currentGuid];
+        item.pubDate = [self dateFromString:self.currentPubDate];
         
-            if (![[RSSDataManager sharedManager] foundGuid:[self trimString:self.currentGuid]
-                                       inLocalChannelStore:self.currentChannel]) {
-                
-                RSSItem *item = [[RSSDataManager sharedManager] createItemInChannel:self.currentChannel];
-                
-                item.title = title;
-                item.info  = info;
-                item.link  = link;
-                item.guid  = guid;
-                item.pubDate = pubDate;
-            }
-        });
+        [self.items addObject:item];
     }
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    if (self.successBlock) {
-        self.successBlock();
+    
+    __weak RSSParser *weakSelf = self;
+    
+    if (self.completionBlock) {
+        self.completionBlock(YES, weakSelf.items, nil);
     }
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-    if (self.failureBlock) {
-        self.failureBlock(parseError);
+    if (self.completionBlock) {
+        self.completionBlock(NO, nil, parseError);
     }
 }
 
 - (void)parser:(NSXMLParser *)parser validationErrorOccurred:(NSError *)validationError {
-    if (self.failureBlock) {
-        self.failureBlock(validationError);
+    if (self.completionBlock) {
+        self.completionBlock(NO, nil, validationError);
     }
 }
 

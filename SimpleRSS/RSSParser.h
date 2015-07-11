@@ -7,15 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-@class RSSChannel;
 
-typedef void (^SuccessBlock)(void);
-typedef void (^FailureBlock)(NSError *error);
+typedef void (^CompletionBlock)(BOOL successful, NSArray *items, NSError *error);
 
 @interface RSSParser : NSObject
 
-- (void)getItemsFromChanel:(RSSChannel *)channel
-              onSuccess:(SuccessBlock)successBlock
-              onFailure:(FailureBlock)failureBlock;
+- (void)getItemsFromURLWithString:(NSString *)string
+                  completionBlock:(CompletionBlock)completionBlock;
 
 @end

@@ -17,6 +17,7 @@ NS_ENUM(NSInteger, UIActionSheetButtonType) {
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *infoTextView;
+@property (weak, nonatomic) IBOutlet UILabel *pubDateLabel;
 
 @end
 
@@ -30,9 +31,8 @@ NS_ENUM(NSInteger, UIActionSheetButtonType) {
     dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"EEEE, dd MMMM HH:mm";
     
-    self.navigationItem.title = [dateFormatter stringFromDate:self.item.pubDate];
-    
     self.titleLabel.text = self.item.title;
+    self.pubDateLabel.text = [dateFormatter stringFromDate:self.item.pubDate];
     self.infoTextView.text = self.item.info;
     
 }

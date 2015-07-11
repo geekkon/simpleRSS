@@ -8,7 +8,6 @@
 
 #import "RSSItem.h"
 
-
 @implementation RSSItem
 
 @dynamic guid;

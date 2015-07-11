@@ -9,6 +9,7 @@
 #import "RSSDataManager.h"
 #import "RSSValidator.h"
 #import "RSSParser.h"
+#import "RSSParsedItem.h"
 #import "RSSChannel.h"
 #import "RSSItem.h"
 
@@ -83,38 +84,64 @@
 
 #pragma mark - RSSItem Managment
 
-- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(CompletionBlock)block {
+- (void)loadItemsFromChannel:(RSSChannel *)channel completion:(VoidBlock)block {
     
     RSSParser *parser = [[RSSParser alloc] init];
     
     __weak RSSDataManager *weakSelf = self;
     
-    dispatch_sync([RSSDataManager sharedManager].parserQueue, ^{
-    
-        [parser getItemsFromChanel:channel
-                         onSuccess:^{
-                             dispatch_sync(dispatch_get_main_queue(), ^{
-                             
-                                 [weakSelf saveContext];
-                             
-                                 if (block) {
-                                     block();
-                                 }
-                             });
-         
-                         }
-                         onFailure:^(NSError *error) {
-                             dispatch_sync(dispatch_get_main_queue(), ^{
-                             
-                                 NSLog(@"%@", [error localizedDescription]);
-                                 
-                                 if (block) {
-                                     block();
-                                 }
-                             });
-
-                         }];
+    dispatch_async([RSSDataManager sharedManager].parserQueue, ^{
+        
+        [parser getItemsFromURLWithString:channel.channel
+                          completionBlock:^(BOOL success, NSArray *items, NSError *error) {
+                              
+                              if (success) {
+                                  
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [weakSelf insertItems:items toChannel:channel withBlock:(block)];
+                                  });
+                                  
+                              } else {
+                                  
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      
+                                      NSLog(@"%@", [error localizedDescription]);
+                                      
+                                      if (block) {
+                                          block();
+                                      }
+                                  });
+                              }
+                          }];
     });
+}
+
+- (void)insertItems:(NSArray *)items toChannel:(RSSChannel *)channel withBlock:(VoidBlock)block {
+    
+    if (items) {
+        
+        for (RSSParsedItem  *parsedItem in items) {
+            
+            if (![self foundGuid:parsedItem.guid inLocalChannelStore:channel]) {
+            
+                RSSItem *item = [self createItemInChannel:channel];
+                
+                item.title = parsedItem.title;
+                item.guid  = parsedItem.guid;
+                item.link  = parsedItem.link;
+                item.info  = parsedItem.info;
+                item.pubDate  = parsedItem.pubDate;
+                
+//                [self saveContext];
+            }
+            
+            [self saveContext];
+        }
+    }
+ 
+    if (block) {
+        block();
+    }
 }
 
 - (RSSItem *)createItemInChannel:(RSSChannel *)channel {

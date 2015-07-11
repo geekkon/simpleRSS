@@ -37,9 +37,9 @@
              forControlEvents:UIControlEventValueChanged];
     
     [self refresh:refreshControl];
-    
+        
     self.refreshControl = refreshControl;
-
+    
     self.tableView.estimatedRowHeight = 45.0;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -54,7 +54,8 @@
     [super viewWillAppear:animated];
     
     if (self.loaded) {
-        [self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows
+                              withRowAnimation:UITableViewRowAnimationNone];
         
         self.loaded = NO;
     }
@@ -90,7 +91,8 @@
     _fetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                         managedObjectContext:[RSSDataManager sharedManager].context
-                                          sectionNameKeyPath:nil                                                   cacheName:nil];
+                                          sectionNameKeyPath:nil
+                                                   cacheName:nil];
     
     _fetchedResultsController.delegate = self;
     
@@ -164,7 +166,6 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
 }
-
 
 #pragma mark - Segue
 
